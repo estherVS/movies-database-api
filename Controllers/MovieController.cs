@@ -47,6 +47,7 @@ namespace Movies.Api.Controllers
         var movieModel = movieDto.ToMovieFromCreateDto();
         _context.Movies.Add(movieModel);
         _context.SaveChanges();
+
         return CreatedAtAction(nameof(GetById), new {id = movieModel.Id}, movieModel.ToMovieDto());
     }
 
@@ -89,6 +90,25 @@ namespace Movies.Api.Controllers
         _context.SaveChanges();
 
         return Ok(movieModel.ToMovieDto());
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+
+    public IActionResult Delete([FromRoute] int id)
+    {
+        var movieModel = _context.Movies.FirstOrDefault(x => x.Id == id);
+
+        if(movieModel == null)
+        {
+            return NotFound();
+        }
+
+        _context.Movies.Remove(movieModel);
+
+        _context.SaveChanges();
+
+        return NoContent();
     }
 
 }
