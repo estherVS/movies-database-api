@@ -21,17 +21,19 @@ namespace Movies.Api.Controllers
     
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var movies = _context.Movies.ToList().Select(s => s.ToMovieDto());
+        var movies = await _context.Movies.ToListAsync();
+        
+        var movieDto = movies.Select(s => s.ToMovieDto());
 
-        return Ok(movies);
+        return Ok(movieDto);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        var movie = _context.Movies.Find(id);
+        var movie = await _context.Movies.FindAsync(id);
 
         if(movie == null)
         {
@@ -42,11 +44,11 @@ namespace Movies.Api.Controllers
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateMovieRequestDto movieDto)
+    public async Task<IActionResult> Create([FromBody] CreateMovieRequestDto movieDto)
     {
         var movieModel = movieDto.ToMovieFromCreateDto();
-        _context.Movies.Add(movieModel);
-        _context.SaveChanges();
+        await _context.Movies.AddAsync(movieModel);
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetById), new {id = movieModel.Id}, movieModel.ToMovieDto());
     }
@@ -54,9 +56,9 @@ namespace Movies.Api.Controllers
     [HttpPut]
     [Route("{id}")]
 
-    public IActionResult Update([FromRoute] int id, [FromBody] UpdateMovieRequestDto updateDto)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateMovieRequestDto updateDto)
     {
-        var movieModel = _context.Movies.FirstOrDefault(x => x.Id == id);
+        var movieModel = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
 
         if(movieModel == null)
         {
@@ -87,7 +89,7 @@ namespace Movies.Api.Controllers
         movieModel.SpokenLanguages = updateDto.SpokenLanguages;
         movieModel.Keywords = updateDto.Keywords;
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return Ok(movieModel.ToMovieDto());
     }
@@ -95,9 +97,9 @@ namespace Movies.Api.Controllers
     [HttpDelete]
     [Route("{id}")]
 
-    public IActionResult Delete([FromRoute] int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
-        var movieModel = _context.Movies.FirstOrDefault(x => x.Id == id);
+        var movieModel = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
 
         if(movieModel == null)
         {
@@ -106,7 +108,7 @@ namespace Movies.Api.Controllers
 
         _context.Movies.Remove(movieModel);
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
