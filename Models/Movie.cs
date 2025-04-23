@@ -12,7 +12,7 @@ namespace Movies.Api.Models
         public string Title { get; set; } = string.Empty;
         public decimal? VoteAverage { get; set; }
         public int? VoteCount { get; set; }
-        public string? Status { get; set; } = string.Empty;
+        public string? Status { get; set; }
         public string? ReleaseDate { get; set; }
         public decimal? Revenue { get; set; } 
         public int? Runtime { get; set; }
