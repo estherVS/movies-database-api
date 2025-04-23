@@ -50,6 +50,46 @@ namespace Movies.Api.Controllers
         return CreatedAtAction(nameof(GetById), new {id = movieModel.Id}, movieModel.ToMovieDto());
     }
 
+    [HttpPut]
+    [Route("{id}")]
+
+    public IActionResult Update([FromRoute] int id, [FromBody] UpdateMovieRequestDto updateDto)
+    {
+        var movieModel = _context.Movies.FirstOrDefault(x => x.Id == id);
+
+        if(movieModel == null)
+        {
+            return NotFound();
+        }
+
+        movieModel.Title = updateDto.Title;
+        movieModel.VoteAverage = updateDto.VoteAverage;
+        movieModel.VoteCount = updateDto.VoteCount;
+        movieModel.Status = updateDto.Status;
+        movieModel.ReleaseDate = updateDto.ReleaseDate;
+        movieModel.Revenue = updateDto.Revenue;
+        movieModel.Runtime = updateDto.Runtime;
+        movieModel.Adult = updateDto.Adult;
+        movieModel.BackdropPath = updateDto.BackdropPath;
+        movieModel.Budget = updateDto.Budget;
+        movieModel.Homepage = updateDto.Homepage;
+        movieModel.ImdbId = updateDto.Homepage;
+        movieModel.OriginalLanguage = updateDto.OriginalLanguage;
+        movieModel.OriginalTitle = updateDto.OriginalTitle;
+        movieModel.Overview = updateDto.Overview;
+        movieModel.Popularity = updateDto.Popularity;
+        movieModel.PosterPath = updateDto.PosterPath;
+        movieModel.Tagline = updateDto.Tagline;
+        movieModel.Genres = updateDto.Tagline;
+        movieModel.ProductionCompanies = updateDto.ProductionCompanies;
+        movieModel.ProductionCountries = updateDto.ProductionCountries;
+        movieModel.SpokenLanguages = updateDto.SpokenLanguages;
+        movieModel.Keywords = updateDto.Keywords;
+
+        _context.SaveChanges();
+
+        return Ok(movieModel.ToMovieDto());
+    }
 
 }
 }

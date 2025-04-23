@@ -12,5 +12,6 @@ namespace Movies.Api.DTOs.Movie
         public int? Runtime { get; set; }
         public string? Overview { get; set; } 
         public string? Genres { get; set; } 
+        
     }
 }
