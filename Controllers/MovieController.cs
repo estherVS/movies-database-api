@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Data;
+using Movies.Api.Mappers;
 
 namespace Movies.Api.Controllers
 {
@@ -21,7 +22,7 @@ namespace Movies.Api.Controllers
     [HttpGet]
     public IActionResult GetAll()
     {
-        var movies = _context.Movies.ToList();
+        var movies = _context.Movies.ToList().Select(s => s.ToMovieDto());
 
         return Ok(movies);
     }
@@ -36,7 +37,7 @@ namespace Movies.Api.Controllers
             return NotFound();
         }
 
-        return Ok(movie);
+        return Ok(movie.ToDetailedMovieDto());
     }
 
 }
