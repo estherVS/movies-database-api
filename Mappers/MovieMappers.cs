@@ -54,6 +54,18 @@ namespace Movies.Api.Mappers
             };
         }
 
+        public static Movie ToMovieFromCreateDto(this CreateMovieRequestDto movieDto)
+        {
+             return new Movie
+             {
+                Title = movieDto.Title,
+                ReleaseDate = movieDto.ReleaseDate,
+                Runtime = movieDto.Runtime,
+                Overview = movieDto.Overview,
+                Genres = movieDto.Genres
+             };
+        }
+
     }
 
 

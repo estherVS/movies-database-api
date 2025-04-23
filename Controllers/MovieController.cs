@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Data;
+using Movies.Api.DTOs.Movie;
 using Movies.Api.Mappers;
 
 namespace Movies.Api.Controllers
@@ -39,6 +40,16 @@ namespace Movies.Api.Controllers
 
         return Ok(movie.ToDetailedMovieDto());
     }
+
+    [HttpPost]
+    public IActionResult Create([FromBody] CreateMovieRequestDto movieDto)
+    {
+        var movieModel = movieDto.ToMovieFromCreateDto();
+        _context.Movies.Add(movieModel);
+        _context.SaveChanges();
+        return CreatedAtAction(nameof(GetById), new {id = movieModel.Id}, movieModel.ToMovieDto());
+    }
+
 
 }
 }
