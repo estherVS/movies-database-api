@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Movies.Api.Data;
 using Movies.Api.DTOs.Movie;
-using Movies.Api.Helpers;
+using Movies.Api.QueryObjects;
 using Movies.Api.Interfaces;
 using Movies.Api.Models;
 
@@ -49,7 +49,10 @@ namespace Movies.Api.Repository
             {
                 movies = movies.Where(s => s.Title.Contains(search.Title));
             }
-            return await movies.ToListAsync();
+
+            var skipNumber = (search.PageNumber - 1) * search.PageSize;
+
+            return await movies.Skip(skipNumber).Take(search.PageSize).ToListAsync();
         }
 
         public async Task<Movie?> GetByIdAsync(int id)

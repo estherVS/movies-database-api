@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Movies.Api.Data;
 using Movies.Api.DTOs.Movie;
-using Movies.Api.Helpers;
+using Movies.Api.QueryObjects;
 using Movies.Api.Interfaces;
 using Movies.Api.Mappers;
 
