@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Movies.Api.Data;
+using Movies.Api.Interfaces;
+using Movies.Api.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 
 var app = builder.Build();
 
