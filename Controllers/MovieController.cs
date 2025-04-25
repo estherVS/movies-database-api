@@ -27,9 +27,19 @@ namespace Movies.Api.Controllers
     {
         var movies = await _movieRepo.GetAllAsync(search);
         
-        var movieDto = movies.Select(s => s.ToMovieDto());
+        var movieDtos = movies.Select(s => s.ToMovieDto());
 
-        return Ok(movieDto);
+        var movieCount = await _movieRepo.CountAsync(search);
+
+        return Ok(new PaginationDto<MovieDto>
+            {
+                CurrentPage = search.PageNumber,
+                PageSize = search.PageSize,
+                TotalPages = (movieCount + search.PageSize - 1)/search.PageSize,
+                TotalItems = movieCount,
+                Items = movieDtos.ToList()
+            }
+        );
     }
 
     [HttpGet("{id}")]

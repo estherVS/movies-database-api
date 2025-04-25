@@ -15,5 +15,6 @@ namespace Movies.Api.Interfaces
         Task<Movie> CreateAsync (Movie movieModel);
         Task<Movie?> UpdateAsync(int id, UpdateMovieRequestDto movieDto);
         Task<Movie?> DeleteAsync(int id);
+        Task<int> CountAsync(MovieQueryParameters query);
    }
 }

@@ -19,6 +19,18 @@ namespace Movies.Api.Repository
             _context = context;
         }
 
+        public async Task<int> CountAsync(MovieQueryParameters search)
+        {
+            var movies = _context.Movies.AsQueryable();
+
+            if(!string.IsNullOrWhiteSpace(search.Title))
+            {
+                movies = movies.Where(s => s.Title.Contains(search.Title));
+            }
+
+            return await movies.CountAsync(); 
+        }
+
         public async Task<Movie> CreateAsync(Movie movieModel)
         {
             await _context.Movies.AddAsync(movieModel);
@@ -52,7 +64,7 @@ namespace Movies.Api.Repository
 
             var skipNumber = (search.PageNumber - 1) * search.PageSize;
 
-            return await movies.Skip(skipNumber).Take(search.PageSize).ToListAsync();
+            return await movies.Skip(skipNumber).Take(search.PageSize).ToListAsync(); 
         }
 
         public async Task<Movie?> GetByIdAsync(int id)
